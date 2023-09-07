@@ -1,0 +1,20 @@
+{
+    "operaciones": [
+        {
+            "operacion": "suma",
+            "valor1": 4.5,
+            "valor2": 5.5
+        },
+        {
+            "operacion": "resta",
+            "valor1": 4.5,
+            "valor2": [
+                {
+                    "operacion": "suma",
+                    "valor1": 4.5,
+                    "valor2": 5.5
+                }
+            ]
+        }
+    ]
+}
