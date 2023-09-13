@@ -1,25 +1,7 @@
-{
-    "operaciones?": [
-        {
-            "operacion": "suma",
-            "valor1": 4.5,
-            "valor2": 5.5
-        },
-        {
-            "operacion": "resta",
-            "valor1": 4.5,
-            "valor2": [
-                {
-                    "operacion": "suma",
-                    "valor1": 4.5,
-                    "valor2": 5.5
-                }
-            ]
-        }
-    ]
-}
+Estado = 0
 
-LEXICO -> caracteres validos del lenguaje
-SINTACTICO -> orden de la sintaxis del lenguaje
+// AQUI EMPIEZA EL AFD
 
-int val1 = 1;
+if Estado == 0
+    lexema == '{'
+    

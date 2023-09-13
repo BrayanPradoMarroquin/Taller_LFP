@@ -32,29 +32,24 @@ def esnumero(c):
 
 def ExpresionDecimal(c, val):
     global valor, fila, columna, cont, flagExpressionDecimal
-    conta=cont
-    if esnumero(c) & (cont <= 2):
-        val += c
-        cont = cont + 1
-        valor=val
-        return
-    elif (cont>0) & (cont<=2) & (ord(c)==32):
+    if esnumero(c):
+        valor+=c
         columna+=1
-        tablasimbolos.append(token("Numero", valor, fila, (columna - 1 - len(valor))))
+    elif ord(c)==46:
+        valor+=c
+        columna+=1
+        cont+=1
+    elif ord(c)==44:
+        flagExpressionDecimal=False
+        tablaSimbolos.append(token("Tk_numero", valor, fila, columna-1))
+        tablaSimbolos.append(token("Tk_coma", ",", fila, columna))
         valor=""
-        cont=0
-        flagExpressionDecimal = False
-    elif (cont>0) & (cont<=2) & (ord(c)==44):
-        columna += 1
-        tablasimbolos.append(token("Numero", valor, fila, (columna - 1 - len(valor))))
-        columna+=1
-        tablasimbolos.append(token("coma",",",fila,(columna-2)))
-        valor = ""
+        return
+    elif c==' ':
         flagExpressionDecimal=False
-        cont = 0
+        tablaSimbolos.append(token("Tk_numero", valor, fila, columna))
+        valor=""
+        return
     else:
-        val += c
-        Error(valor, fila, columna,  "Se espera un numero con formato ##.##")
-        flagExpressionDecimal=False
-        cont = 0
+        tablaErrores.append(Error(c, fila, columna, "Lexico: Caracter no valido"))
         return

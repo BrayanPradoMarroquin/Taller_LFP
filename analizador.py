@@ -4,12 +4,17 @@ from clases import *
 def analizador(c):
     if condiciones.flagcadena==True:
         condiciones.expresioncadena(c)
+    elif condiciones.flagExpressionDecimal==True:
+        condiciones.ExpresionDecimal(c,condiciones.valor)
     elif ord(c)==123:
         condiciones.columna+=1
         condiciones.fila+=1
         condiciones.tablaSimbolos.append(token("Tk_llaveabre","{",condiciones.fila,condiciones.columna))
     elif ord(c)==34:
         condiciones.flagcadena=True
+    elif condiciones.esnumero(c):
+        condiciones.flagExpressionDecimal=True
+        condiciones.valor+=c
     elif ord(c)==58:
         condiciones.columna+=1
         condiciones.fila+=1

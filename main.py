@@ -1,5 +1,7 @@
 
 import analizador
+import condiciones
+import AFD
 
 ## llamar al archivo operaciones.json y mostrarlo en pantalla
 with open("operaciones.json", "r") as texto:
@@ -10,4 +12,8 @@ Array = list(contenido)
 for i in Array:
     analizador.analizador(i)
 
-print("Tabla de simbolos")
+for token in condiciones.tablaSimbolos:
+    AFD.analizarAFD(token)
+
+for operacion in AFD.operaciones:
+    print(operacion.val1, " + ", operacion.val2, " = ", operacion.resultado)
