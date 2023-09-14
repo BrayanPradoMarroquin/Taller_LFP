@@ -2,29 +2,20 @@
     "operaciones": [
         {
             "operacion": "suma",
-            "valor1": 90,
-            "valor2": 10
-        },
-        {
-            "operacion": "resta",
-            "valor1": 90,
-            "valor2": 10
-        },
-        {
-            "operacion": "seno",
-            "valor1": 90
-        },
-        {
-            "operacion": "coseno",
-            "valor1": 90
-        },
-        {
-            "operacion": "tangente",
-            "valor1": 90
-        },
-        {
-            "operacion": "inverso",
-            "valor1": 90
+            "valor1": [
+                {
+                    "operacion": "suma",
+                    "valor1": 1,
+                    "valor2": 2
+                }
+            ],
+            "valor2": [
+                {
+                    "operacion": "suma",
+                    "valor1": 1,
+                    "valor2": 2
+                }
+            ]
         }
     ]
 }

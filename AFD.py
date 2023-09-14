@@ -3,10 +3,13 @@ import clases
 import math
 
 Estado = 0
+Estadoop1 = 0
+Estadoop2 = 0
 operaciones = []
 
 classAFD = None
-
+classAFDop1 = None
+classAFDop2 = None
 
 # Función que analiza el contenido del archivo operaciones.json
 def analizarAFD(token):
@@ -94,7 +97,6 @@ def analizarAFD(token):
             Estado = 14
         elif token.lexema=="}":
             Estado = 18
-            classAFD.resultado = operacion()
             operaciones.append(classAFD)
             classAFD = None
     elif Estado == 14:
@@ -108,12 +110,11 @@ def analizarAFD(token):
             classAFD.val2 = token.lexema
             Estado = 17
         elif token.lexema=="[":
-            Estado = 13 ## para un futuro >D 
+            Estado = 21 ## para un futuro >D 
             ## classAFD.val2 = (int)token.lexema
     elif Estado == 17:
         if token.lexema=="}":
             Estado = 18
-            classAFD.resultado = operacion()
             operaciones.append(classAFD)
             classAFD = None
     elif Estado == 18:
@@ -126,7 +127,171 @@ def analizarAFD(token):
             Estado = 20
     elif Estado == 20:
         return
+    
+    elif Estado == 13:
+        classAFD.val1 = AnalizarOp1(token)
+    elif Estado == 21:
+        classAFD.val2 = AnalizarOp2(token)
 
+def AnalizarOp1(token):
+    global Estadoop1, classAFDop1, Estado
+    if token.lexema == '{':
+        Estadoop1 = 1
+    elif Estadoop1 == 1:
+        if token.lexema == 'operacion':
+            Estadoop1 = 2
+            classAFDop1 = clases.AFD("", 0, 0, 0)
+    elif Estadoop1 == 2:
+        if token.lexema == ':':
+            Estadoop1 = 3
+    elif Estadoop1 == 3:
+        if token.lexema == 'suma':
+            classAFDop1.operacion = token.lexema
+            Estadoop1 = 4
+        elif token.lexema == 'resta':
+            classAFDop1.operacion = token.lexema
+            Estadoop1 = 4
+        elif token.lexema == 'multiplicacion':
+            classAFDop1.operacion = token.lexema
+            Estadoop1 = 4
+        elif token.lexema == 'division':
+            classAFDop1.operacion = token.lexema
+            Estadoop1 = 4
+        elif token.lexema == 'potencia':
+            classAFDop1.operacion = token.lexema
+            Estadoop1 = 4
+        elif token.lexema == 'raiz':
+            classAFDop1.operacion = token.lexema
+            Estadoop1 = 4
+        elif token.lexema == 'inverso':
+            classAFDop1.operacion = token.lexema
+            Estadoop1 = 4
+        elif token.lexema == 'seno':
+            classAFDop1.operacion = token.lexema
+            Estadoop1 = 4
+        elif token.lexema == 'coseno':
+            classAFDop1.operacion = token.lexema
+            Estadoop1 = 4
+        elif token.lexema == 'tangente':
+            classAFDop1.operacion = token.lexema
+            Estadoop1 = 4
+        elif token.lexema == 'Mod':
+            classAFDop1.operacion = token.lexema
+            Estadoop1 = 4
+    elif Estadoop1 == 4:
+        if token.lexema == ',':
+            Estadoop1 = 5
+    elif Estadoop1 == 5:
+        if token.lexema == 'valor1':
+            Estadoop1 = 6
+    elif Estadoop1 == 6:
+        if token.lexema == ':':
+            Estadoop1 = 7
+    elif Estadoop1 == 7:
+        if token.token == 'Tk_numero':
+            classAFDop1.val1 = token.lexema
+            Estadoop1 = 8
+    elif Estadoop1 == 8:
+        if token.lexema == ',':
+            Estadoop1 = 9
+    elif Estadoop1 == 9:
+        if token.lexema == 'valor2':
+            Estadoop1 = 10
+    elif Estadoop1 == 10:
+        if token.lexema == ':':
+            Estadoop1 = 11
+    elif Estadoop1 == 11:
+        if token.token == 'Tk_numero':
+            classAFDop1.val2 = token.lexema
+            Estadoop1 = 12
+    elif Estadoop1 == 12:
+        if token.lexema == '}':
+            Estadoop1 = 13
+    elif Estadoop1 == 13:
+        if token.lexema == ']':
+            Estadoop1 = 0
+            Estado = 12
+            return classAFDop1
+
+def AnalizarOp2(token):
+    global Estadoop2, classAFDop2, Estado
+    if token.lexema == '{':
+        Estadoop2 = 1
+    elif Estadoop2 == 1:
+        if token.lexema == 'operacion':
+            Estadoop2 = 2
+            classAFDop2 = clases.AFD("", 0, 0, 0)
+    elif Estadoop2 == 2:
+        if token.lexema == ':':
+            Estadoop2 = 3
+    elif Estadoop2 == 3:
+        if token.lexema == 'suma':
+            classAFDop2.operacion = token.lexema
+            Estadoop2 = 4
+        elif token.lexema == 'resta':
+            classAFDop2.operacion = token.lexema
+            Estadoop2 = 4
+        elif token.lexema == 'multiplicacion':
+            classAFDop2.operacion = token.lexema
+            Estadoop2 = 4
+        elif token.lexema == 'division':
+            classAFDop2.operacion = token.lexema
+            Estadoop2 = 4
+        elif token.lexema == 'potencia':
+            classAFDop2.operacion = token.lexema
+            Estadoop2 = 4
+        elif token.lexema == 'raiz':
+            classAFDop2.operacion = token.lexema
+            Estadoop2 = 4
+        elif token.lexema == 'inverso':
+            classAFDop2.operacion = token.lexema
+            Estadoop2 = 4
+        elif token.lexema == 'seno':
+            classAFDop2.operacion = token.lexema
+            Estadoop2 = 4
+        elif token.lexema == 'coseno':
+            classAFDop2.operacion = token.lexema
+            Estadoop2 = 4
+        elif token.lexema == 'tangente':
+            classAFDop2.operacion = token.lexema
+            Estadoop2 = 4
+        elif token.lexema == 'Mod':
+            classAFDop2.operacion = token.lexema
+            Estadoop2 = 4
+    elif Estadoop2 == 4:
+        if token.lexema == ',':
+            Estadoop2 = 5
+    elif Estadoop2 == 5:
+        if token.lexema == 'valor1':
+            Estadoop2 = 6
+    elif Estadoop2 == 6:
+        if token.lexema == ':':
+            Estadoop2 = 7
+    elif Estadoop2 == 7:
+        if token.token == 'Tk_numero':
+            classAFDop2.val1 = token.lexema
+            Estadoop2 = 8
+    elif Estadoop2 == 8:
+        if token.lexema == ',':
+            Estadoop2 = 9
+    elif Estadoop2 == 9:
+        if token.lexema == 'valor2':
+            Estadoop2 = 10
+    elif Estadoop2 == 10:
+        if token.lexema == ':':
+            Estadoop2 = 11
+    elif Estadoop2 == 11:
+        if token.token == 'Tk_numero':
+            classAFDop2.val2 = token.lexema
+            Estadoop2 = 12
+    elif Estadoop2 == 12:
+        if token.lexema == '}':
+            Estadoop2 = 13
+    elif Estadoop2 == 13:
+        if token.lexema == ']':
+            Estadoop2 = 0
+            Estado = 17
+            return classAFDop2
 
 def operacion():
     if classAFD.operacion=="suma":
@@ -153,3 +318,4 @@ def operacion():
         return float(classAFD.val1) % float(classAFD.val2)
     else:
         return 0
+    
