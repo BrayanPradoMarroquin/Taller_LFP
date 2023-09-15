@@ -15,5 +15,4 @@ for i in Array:
 for token in condiciones.tablaSimbolos:
     AFD.analizarAFD(token)
 
-for operacion in AFD.operaciones:
-    print(operacion.val1, " + ", operacion.val2, " = ", operacion.resultado)
+AFD.graficarAFD()

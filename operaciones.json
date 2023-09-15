@@ -16,6 +16,38 @@
                     "valor2": 2
                 }
             ]
+        },
+        {
+            "operacion": "resta",
+            "valor1": 20,
+            "valor2": 10
+        },
+        {
+            "operacion": "multiplicacion",
+            "valor1": [
+                {
+                    "operacion": "suma",
+                    "valor1": 1,
+                    "valor2": 2
+                }
+            ],
+            "valor2": 10
+        },
+        {
+            "operacion": "division",
+            "valor1": 20,
+            "valor2": 10
+        },
+        {
+            "operacion": "division",
+            "valor1": 20,
+            "valor2": [
+                {
+                    "operacion": "suma",
+                    "valor1": 1,
+                    "valor2": 2
+                }
+            ]
         }
     ]
 }

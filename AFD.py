@@ -126,13 +126,15 @@ def analizarAFD(token):
         if token.lexema=="}":
             Estado = 20
     elif Estado == 20:
+        Estado = 0 
         return
-    
+    ## INGRESAR A LOS 2 ANALIZADORES HIJOS
     elif Estado == 13:
         classAFD.val1 = AnalizarOp1(token)
     elif Estado == 21:
         classAFD.val2 = AnalizarOp2(token)
 
+## ANALIZADOR HIJO DEL VALOR 1
 def AnalizarOp1(token):
     global Estadoop1, classAFDop1, Estado
     if token.lexema == '{':
@@ -213,6 +215,7 @@ def AnalizarOp1(token):
             Estado = 12
             return classAFDop1
 
+## ANALIZADOR HIJO DEL VALOR 2
 def AnalizarOp2(token):
     global Estadoop2, classAFDop2, Estado
     if token.lexema == '{':
@@ -293,29 +296,70 @@ def AnalizarOp2(token):
             Estado = 17
             return classAFDop2
 
-def operacion():
-    if classAFD.operacion=="suma":
-        return float(classAFD.val1) + float(classAFD.val2)
-    elif classAFD.operacion=="resta":
-        return float(classAFD.val1) - float( classAFD.val2)
-    elif classAFD.operacion=="multiplicacion":
-        return classAFD.val1 * classAFD.val2
-    elif classAFD.operacion=="division":
-        return classAFD.val1 / classAFD.val2
-    elif classAFD.operacion=="potencia":
-        return classAFD.val1 ** classAFD.val2
-    elif classAFD.operacion=="raiz":
-        return classAFD.val1 ** (1/classAFD.val2)
-    elif classAFD.operacion=="inverso":
-        return 1/float(classAFD.val1)
-    elif classAFD.operacion=="seno":
-        return math.sin(float(2*math.pi*float(classAFD.val1)/180))
-    elif classAFD.operacion=="coseno":
-        return math.cos(float(2*math.pi*float(classAFD.val1)/180))
-    elif classAFD.operacion=="tangente":
-        return math.tan(float(2*math.pi*float(classAFD.val1)/180))
-    elif classAFD.operacion=="Mod":
-        return float(classAFD.val1) % float(classAFD.val2)
+def graficarAFD():
+    global operaciones
+    for operacionG in operaciones:
+        if (type(operacionG.val1) == str) and (type(operacionG.val2) == str):
+            operacionG.resultado = operacion(operacionG.operacion, operacionG.val1, operacionG.val2)
+            print(operacionG.operacion + " \n " + str(operacionG.resultado) + "\n")
+            print("/     \\")
+            print(operacionG.val1 + "     " + operacionG.val2)
+            print("\n \n \n")
+        elif (type(operacionG.val1) == str) and (type(operacionG.val2) != str):
+            operacionG.resultado = operacion(operacionG.operacion, operacionG.val1, operacionDes(operacionG.val2).resultado) 
+            print(operacionG.operacion + " \n " + str(operacionG.resultado) + "\n")
+            print("/     \\")
+            print(operacionG.val1 + "     " + str(operacionG.val2.operacion) +
+             " \n \t" + str(operacionG.val2.resultado) + "\n")
+            print("\t/     \\")
+            print("\t"+ str(operacionG.val2.val1) + "     " + str(operacionG.val2.val2))
+            print("\n \n")
+        elif (type(operacionG.val1) != str) and (type(operacionG.val2) == str):
+            operacionG.resultado = operacion(operacionG.operacion, operacionDes(operacionG.val1).resultado, operacionG.val2) 
+            print(operacionG.operacion + " \n " + str(operacionG.resultado) + "\n")
+            print("/     \\")
+            print(operacionG.val1.operacion +
+            " \n" + str(operacionG.val1.resultado)
+            + "     " + str(operacionG.val2) + "\n")
+            print("/     \\")
+            print(str(operacionG.val1.val1) + "     " + str(operacionG.val1.val2))
+            print("\n \n")
+        elif (type(operacionG.val1) != str) and (type(operacionG.val2) != str):
+            operacionG.resultado = operacion(operacionG.operacion, operacionDes(operacionG.val1).resultado, operacionDes(operacionG.val2).resultado)
+            print("\t " + operacionG.operacion + " \n " + str(operacionG.resultado) + "\n")
+            print("\t/     \\")
+            print("\t" + operacionG.val1.operacion + "     " + operacionG.val2.operacion)
+            print("\t   "+ str(operacionG.val1.resultado) + "     " + str(operacionG.val2.resultado))
+            print("\t   /     \\ \t \t /     \\")
+            print("\t  " + str(operacionG.val1.val1) + "     " + str(operacionG.val1.val2) + "\t \t" + str(operacionG.val2.val1) + "     " + str(operacionG.val2.val2))
+
+def operacionDes(operacionDerecha):
+    operacionDerecha.resultado = operacion(operacionDerecha.operacion, operacionDerecha.val1, operacionDerecha.val2)
+    return operacionDerecha
+
+def operacion(simbolo, ValR1, ValR2):
+    if simbolo=="suma":
+        return float(ValR1) + float(ValR2)
+    elif simbolo=="resta":
+        return float(ValR1) - float( ValR2)
+    elif simbolo=="multiplicacion":
+        return float(ValR1) * float( ValR2)
+    elif simbolo=="division":
+        return float(ValR1) / float(ValR2)
+    elif simbolo=="potencia":
+        return float(ValR1) ** float(ValR2)
+    elif simbolo=="raiz":
+        return float(ValR1) ** (1/float(ValR2))
+    elif simbolo=="inverso":
+        return 1/float(ValR1)
+    elif simbolo=="seno":
+        return math.sin(float(2*math.pi*float(ValR1)/180))
+    elif simbolo=="coseno":
+        return math.cos(float(2*math.pi*float(ValR1)/180))
+    elif simbolo=="tangente":
+        return math.tan(float(2*math.pi*float(ValR1)/180))
+    elif simbolo=="Mod":
+        return float(ValR1) % float(ValR2)
     else:
         return 0
     
