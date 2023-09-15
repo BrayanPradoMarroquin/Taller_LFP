@@ -1,0 +1,13 @@
+digraph Salida {
+rankdir=TR;
+node [shape = circle, color=blue , style=filled, fillcolor=white];
+node0 [label = "division\n 6.666666666666667"];
+node1 [label = "20"];
+node2 [label = "suma\n 3.0"];
+node0 -> node1;
+node0 -> node2;
+node3[label = "1"];
+node4[label = "2"];
+node2 -> node3;
+node2 -> node4;
+}

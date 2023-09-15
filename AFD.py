@@ -1,11 +1,15 @@
 import condiciones
 import clases
 import math
+import os
 
 Estado = 0
 Estadoop1 = 0
 Estadoop2 = 0
+cont = 0
+contador = 1
 operaciones = []
+grafo = []
 
 classAFD = None
 classAFDop1 = None
@@ -297,41 +301,119 @@ def AnalizarOp2(token):
             return classAFDop2
 
 def graficarAFD():
-    global operaciones
+    global operaciones, cont, contador, grafo
     for operacionG in operaciones:
+        file = open("AFD.dot", "w")
+        escritura = "digraph Salida {\n rankdir=TR;\n node [shape = circle, color=blue , style=filled, fillcolor=white];\n"
         if (type(operacionG.val1) == str) and (type(operacionG.val2) == str):
             operacionG.resultado = operacion(operacionG.operacion, operacionG.val1, operacionG.val2)
-            print(operacionG.operacion + " \n " + str(operacionG.resultado) + "\n")
-            print("/     \\")
-            print(operacionG.val1 + "     " + operacionG.val2)
-            print("\n \n \n")
+            # cont = 0
+            escritura += "node" + str(cont) + " [label = \"" + operacionG.operacion + "\n " + str(operacionG.resultado) + "\"];\n"
+            cont += 1
+            # cont = 1
+            escritura += "node" + str(cont) + " [label = \"" + operacionG.val1 + "\"];\n"
+            cont += 1
+            # cont = 2
+            escritura += "node" + str(cont) + " [label = \"" + operacionG.val2 + "\"];\n"
+            escritura += "node" + str(cont-2) + " -> node" + str(cont-1) + ";\n"
+            escritura += "node" + str(cont-2) + " -> node" + str(cont) + ";\n"
         elif (type(operacionG.val1) == str) and (type(operacionG.val2) != str):
             operacionG.resultado = operacion(operacionG.operacion, operacionG.val1, operacionDes(operacionG.val2).resultado) 
-            print(operacionG.operacion + " \n " + str(operacionG.resultado) + "\n")
-            print("/     \\")
-            print(operacionG.val1 + "     " + str(operacionG.val2.operacion) +
-             " \n \t" + str(operacionG.val2.resultado) + "\n")
-            print("\t/     \\")
-            print("\t"+ str(operacionG.val2.val1) + "     " + str(operacionG.val2.val2))
-            print("\n \n")
+            # cont = 0
+            escritura += "node" + str(cont) + " [label = \"" + operacionG.operacion + "\\n " + str(operacionG.resultado) + "\"];\n"
+            cont += 1
+            # cont = 1
+            escritura += "node" + str(cont) + " [label = \"" + str(operacionG.val1) + "\"];\n"
+            cont += 1
+            # cont = 2
+            escritura += "node" + str(cont) + " [label = \"" + operacionG.val2.operacion + "\\n " + str(operacionG.val2.resultado) + "\"];\n"
+            cont += 1
+            escritura += "node" + str(cont-3) + " -> node" + str(cont-2) + ";\n"
+            escritura += "node" + str(cont-3) + " -> node" + str(cont-1) + ";\n"
+            # cont = 3
+            escritura += "node" + str(cont) + "[label = \"" + operacionG.val2.val1 + "\"];\n"
+            cont += 1
+            # cont = 4
+            escritura += "node" + str(cont) + "[label = \"" + operacionG.val2.val2 + "\"];\n"
+            escritura += "node" + str(cont-2) + " -> node" + str(cont-1) + ";\n"
+            escritura += "node" + str(cont-2) + " -> node" + str(cont) + ";\n"
+            #print(operacionG.operacion + " \n " + str(operacionG.resultado) + "\n")
+            #print("/     \\")
+            #print(operacionG.val1 + "     " + str(operacionG.val2.operacion) +
+            # " \n \t" + str(operacionG.val2.resultado) + "\n")
+            #print("\t/     \\")
+            #print("\t"+ str(operacionG.val2.val1) + "     " + str(operacionG.val2.val2))
+            #print("\n \n")
         elif (type(operacionG.val1) != str) and (type(operacionG.val2) == str):
             operacionG.resultado = operacion(operacionG.operacion, operacionDes(operacionG.val1).resultado, operacionG.val2) 
-            print(operacionG.operacion + " \n " + str(operacionG.resultado) + "\n")
-            print("/     \\")
-            print(operacionG.val1.operacion +
-            " \n" + str(operacionG.val1.resultado)
-            + "     " + str(operacionG.val2) + "\n")
-            print("/     \\")
-            print(str(operacionG.val1.val1) + "     " + str(operacionG.val1.val2))
-            print("\n \n")
+            escritura += "node" + str(cont) + " [label = \"" + operacionG.operacion + "\\n " + str(operacionG.resultado) + "\"];\n"
+            cont += 1
+            # cont = 1
+            escritura += "node" + str(cont) + " [label = \"" + operacionG.val1.operacion + "\\n " + str(operacionG.val1.resultado) + "\"];\n"
+            cont += 1
+            escritura += "node" + str(cont) + " [label = \"" + str(operacionG.val2) + "\"];\n"
+            cont += 1
+            escritura += "node" + str(cont-3) + " -> node" + str(cont-2) + ";\n"
+            escritura += "node" + str(cont-3) + " -> node" + str(cont-1) + ";\n"
+            # cont = 2
+            escritura += "node" + str(cont) + "[label = \"" + operacionG.val1.val1 + "\"];\n"
+            cont += 1
+            # cont = 3
+            escritura += "node" + str(cont) + "[label = \"" + operacionG.val1.val2 + "\"];\n"
+            escritura += "node" + str(cont-2) + " -> node" + str(cont-1) + ";\n"
+            escritura += "node" + str(cont-2) + " -> node" + str(cont) + ";\n"
+            #print(operacionG.operacion + " \n " + str(operacionG.resultado) + "\n")
+            #print("/     \\")
+            #print(operacionG.val1.operacion +
+            #" \n" + str(operacionG.val1.resultado)
+            #+ "     " + str(operacionG.val2) + "\n")
+            #print("/     \\")
+            #print(str(operacionG.val1.val1) + "     " + str(operacionG.val1.val2))
+            #print("\n \n")
         elif (type(operacionG.val1) != str) and (type(operacionG.val2) != str):
             operacionG.resultado = operacion(operacionG.operacion, operacionDes(operacionG.val1).resultado, operacionDes(operacionG.val2).resultado)
-            print("\t " + operacionG.operacion + " \n " + str(operacionG.resultado) + "\n")
-            print("\t/     \\")
-            print("\t" + operacionG.val1.operacion + "     " + operacionG.val2.operacion)
-            print("\t   "+ str(operacionG.val1.resultado) + "     " + str(operacionG.val2.resultado))
-            print("\t   /     \\ \t \t /     \\")
-            print("\t  " + str(operacionG.val1.val1) + "     " + str(operacionG.val1.val2) + "\t \t" + str(operacionG.val2.val1) + "     " + str(operacionG.val2.val2))
+            escritura += "node" + str(cont) + " [label = \""+ str(cont) + " | "  + operacionG.operacion + "\\n " + str(operacionG.resultado) + "\"];\n"
+            cont += 1
+            # cont = 1
+            escritura += "node" + str(cont) + " [label = \"" + str(cont) + " | "  + operacionG.val1.operacion + "\\n " + str(operacionG.val1.resultado) + "\"];\n"
+            cont += 1
+            # cont = 2
+            escritura += "node" + str(cont) + " [label = \" " + str(cont) + " | " + operacionG.val2.operacion + "\\n " + str(operacionG.val2.resultado) + "\"];\n"
+            escritura += "node" + str(cont-2) + " -> node" + str(cont-1) + ";\n"
+            escritura += "node" + str(cont-2) + " -> node" + str(cont) + ";\n"
+            # cont = 3
+            cont += 1
+            escritura += "node" + str(cont) + "[label = \""+ str(cont) + " | "  + str(operacionG.val1.val1) + "\"];\n"
+            cont += 1
+            # cont = 4
+            escritura += "node" + str(cont) + "[label = \""+ str(cont) + " | "  + str(operacionG.val1.val2) + "\"];\n"
+            print(cont)
+            escritura += "node" + str(cont-3) + " -> node" + str(cont-1) + ";\n"
+            escritura += "node" + str(cont-3) + " -> node" + str(cont) + ";\n"
+            cont += 1
+            # cont = 5
+            escritura += "node" + str(cont) + "[label = \""+ str(cont) + " | "  + str(operacionG.val2.val1) + "\"];\n"
+            cont += 1
+            # cont = 6
+            escritura += "node" + str(cont) + "[label = \""+ str(cont) + " | "  + str(operacionG.val2.val2) + "\"];\n"
+            print(cont)
+            escritura += "node" + str(cont-4) + " -> node" + str(cont-1) + ";\n"
+            escritura += "node" + str(cont-4) + " -> node" + str(cont) + ";\n"
+            #print("\t " + operacionG.operacion + " \n " + str(operacionG.resultado) + "\n")
+            #print("\t/     \\")
+            #print("\t" + operacionG.val1.operacion + "     " + operacionG.val2.operacion)
+            #print("\t   "+ str(operacionG.val1.resultado) + "     " + str(operacionG.val2.resultado))
+            #print("\t   /     \\ \t \t /     \\")
+            #print("\t  " + str(operacionG.val1.val1) + "     " + str(operacionG.val1.val2) + "\t \t" + str(operacionG.val2.val1) + "     " + str(operacionG.val2.val2))
+        escritura += "}"
+        file.write(escritura)
+        #file.close()
+        escritura = ""
+        imagen = "AFD"+str(contador)+".png"
+        cont = 0
+        grafo.append(imagen)
+        os.system("dot -Tpng AFD.dot -o " + imagen)
+        contador += 1
 
 def operacionDes(operacionDerecha):
     operacionDerecha.resultado = operacion(operacionDerecha.operacion, operacionDerecha.val1, operacionDerecha.val2)
